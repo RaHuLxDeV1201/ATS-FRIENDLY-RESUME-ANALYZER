@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 #1 Base class: this tells sqlalchemy that these classes have to converted into database table
 Base = declarative_base()
 #2 user table: to save details of user
-class User(Base):
+class USER(Base):
     __tablename__ ="users"
 
     id=Column(Integer,primary_key=True,index=True)   
