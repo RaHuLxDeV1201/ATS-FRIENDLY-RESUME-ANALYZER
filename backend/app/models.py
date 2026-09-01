@@ -15,7 +15,7 @@ class User(Base):
     #Since a user can contain multiple resume 
     resume = relationship("Resume", back_populates="owner")
 #3 Resume Table: Upload kiye gaye resume ka data save karne ke liye
-class Resume(Base):
+class RESUME(Base):
    __tablename__ = "resumes"
    id = Column(Integer,primary_key=True,index=True)
    full_name =Column(String)
