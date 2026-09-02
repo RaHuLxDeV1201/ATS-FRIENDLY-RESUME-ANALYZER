@@ -1,47 +1,140 @@
-#Blue print of project (Structure of file database)
-from sqlalchemy import Column, Integer,String,Float,ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship, declarative_base
-#1 Base class: this tells sqlalchemy that these classes have to converted into database table
+
+
+# ==========================================
+# BASE CLASS
+# ==========================================
+
 Base = declarative_base()
-#2 user table: to save details of user
+
+
+# ==========================================
+# USER TABLE
+# ==========================================
+
 class User(Base):
-    __tablename__ ="users"
+    __tablename__ = "users"
 
-    id=Column(Integer,primary_key=True,index=True)  #primary key 
-    full_name =Column(String,index=True)#user name
-    email= Column(String,unique=True,index=True,nullable=False)#user e mail
-    password_hash =Column(String, nullable=False)
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
 
-    #Since a user can contain multiple resume 
-    resume = relationship(
+    full_name = Column(
+        String,
+        nullable=False,
+        index=True
+    )
+
+    email = Column(
+        String,
+        unique=True,
+        nullable=False,
+        index=True
+    )
+
+    password_hash = Column(
+        String,
+        nullable=False
+    )
+
+    # One User -> Many Resumes
+    resumes = relationship(
         "Resume",
-         back_populates="owner")
-#3 Resume Table: Upload kiye gaye resume ka data save karne ke liye
+        back_populates="owner",
+        cascade="all, delete-orphan"
+    )
+
+
+# ==========================================
+# RESUME TABLE
+# ==========================================
+
 class Resume(Base):
-   __tablename__ = "resumes"
+    __tablename__ = "resumes"
 
-   id = Column(Integer,primary_key=True,index=True)
-   full_name =Column(String)
-   extracted_text = Column(String)#PDF se nikala gya pura text 
-   #Foreign key batata hai ki yeh resume kis user ka hai
-   user_id = Column(Integer,ForeignKey("users.id",nullable=False))
-   #relationship
-   owner = relationship("User", back_populates="resume")
-   ats_report= relationship("ATSReport",back_populates="resume", uselist = False)
-#4 ATS Report table: Score aur Ai ka result save
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+
+    full_name = Column(
+        String,
+        nullable=False
+    )
+
+    extracted_text = Column(
+        String,
+        nullable=True
+    )
+
+    # Resume kis user ka hai
+    user_id = Column(
+        Integer,
+        ForeignKey("users.id"),
+        nullable=False
+    )
+
+    # Relationship with User
+    owner = relationship(
+        "User",
+        back_populates="resumes"
+    )
+
+    # One Resume -> One ATS Report
+    ats_report = relationship(
+        "ATSReport",
+        back_populates="resume",
+        uselist=False,
+        cascade="all, delete-orphan"
+    )
+
+
+# ==========================================
+# ATS REPORT TABLE
+# ==========================================
+
 class ATSReport(Base):
-    __tablename__="ats_reports"
+    __tablename__ = "ats_reports"
 
-    id = Column(Integer,primary_key=True,index=True)
-    overall_score = Column(Float)#ATS Score
-    missing_keyword = Column(String)
-    grammar_mistake = Column(Integer)
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+
+    # ATS Score
+    overall_score = Column(
+        Float,
+        nullable=False
+    )
+
+    # Missing keywords
+    missing_keyword = Column(
+        String,
+        nullable=True
+    )
+
+    # Number of grammar mistakes
+    grammar_mistake = Column(
+        Integer,
+        nullable=False,
+        default=0
+    )
+
+    # Yeh report kis resume ki hai?
     resume_id = Column(
         Integer,
         ForeignKey("resumes.id"),
         nullable=False,
         unique=True
     )
-    #relationship Resume <-> ATS report
-    resume=relationship("Resume",back_populates="ats_report")
-        
+
+    # Relationship with Resume
+    resume = relationship(
+        "Resume",
+        back_populates="ats_report"
+    )

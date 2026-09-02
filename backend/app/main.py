@@ -4,37 +4,23 @@ from fastapi.middleware.cors import CORSMiddleware
 from . import models
 from .database import engine
 
-# Routes import
-from .routes import auth_routes
-from .routes import resume_routes
-from .routes import ats_routes
+from .routes.auth_routes import router as auth_router
+from .routes.resume_routes import router as resume_router
+from .routes.ats_routes import router as ats_router
 
 
-# =========================================================
-# DATABASE TABLE CREATION
-# =========================================================
-
-# SQLAlchemy database mein tables create karega
-# agar tables already exist karti hain to dobara nahi banayega.
+# Create database tables
 models.Base.metadata.create_all(bind=engine)
 
 
-# =========================================================
-# FASTAPI APPLICATION
-# =========================================================
-
 app = FastAPI(
-    title="ATS Friendly Resume Analyzer API",
+    title="ATS Friendly Resume Analyzer",
     description="Backend API for ATS Friendly Resume Analyzer",
     version="1.0.0"
 )
 
 
-# =========================================================
 # CORS
-# =========================================================
-
-# React frontend ko FastAPI backend se connect karne ki permission
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -44,10 +30,7 @@ app.add_middleware(
 )
 
 
-# =========================================================
-# TEST ROUTE
-# =========================================================
-
+# Home
 @app.get("/")
 def home():
     return {
@@ -55,33 +38,22 @@ def home():
     }
 
 
-# =========================================================
-# ROUTES
-# =========================================================
-
-# Authentication:
-# /signup
-# /login
+# Authentication
 app.include_router(
-    auth_routes.router,
-    prefix="/auth",
+    auth_router,
     tags=["Authentication"]
 )
 
 
-# Resume:
-# Resume upload / resume related APIs
+# Resume
 app.include_router(
-    resume_routes.router,
-    prefix="/resume",
+    resume_router,
     tags=["Resume"]
 )
 
 
-# ATS:
-# ATS score / report related APIs
+# ATS
 app.include_router(
-    ats_routes.router,
-    prefix="/ats",
+    ats_router,
     tags=["ATS Analysis"]
 )
