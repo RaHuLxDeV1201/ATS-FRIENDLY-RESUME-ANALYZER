@@ -5,22 +5,10 @@ from .. import models
 from ..database import SessionLocal
 from ..api.dependencies import get_db
 
-
 router = APIRouter(
     prefix="/ats",
     tags=["ATS Analysis"]
 )
-
-
-# Database connection
-def get_db():
-    db = SessionLocal()
-
-    try:
-        yield db
-    finally:
-        db.close()
-
 
 # =========================
 # ANALYZE RESUME
@@ -31,7 +19,6 @@ def analyze_resume(
     resume_id: int,
     db: Session = Depends(get_db)
 ):
-
     # Find resume
     resume = (
         db.query(models.Resume)
@@ -47,7 +34,6 @@ def analyze_resume(
 
     # Temporary ATS logic
     text = resume.extracted_text or ""
-
     word_count = len(text.split())
 
     if word_count >= 500:
@@ -87,7 +73,6 @@ def get_ats_report(
     resume_id: int,
     db: Session = Depends(get_db)
 ):
-
     report = (
         db.query(models.ATSReport)
         .filter(models.ATSReport.resume_id == resume_id)

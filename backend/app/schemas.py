@@ -1,30 +1,35 @@
 from pydantic import BaseModel, EmailStr
-#Frontend password verify of mail and password
+
+# ==========================================
+# USER REQUESTS (Frontend -> Backend)
+# ==========================================
+
 class UserCreate(BaseModel):
     full_name: str
-    email:str
-    password:str
-#fronted se login ke time sirf
+    email: EmailStr
+    password: str
+
 class UserLogin(BaseModel):
-    email:str
-    password:str
-  # USER RESPONSE
+    email: EmailStr
+    password: str
+
+# ==========================================
+# USER RESPONSE (Backend -> Frontend)
 # ==========================================
 
 class UserResponse(BaseModel):
-
     id: int
     full_name: str
     email: EmailStr
 
     class Config:
         from_attributes = True
+
 # ==========================================
 # ATS REPORT RESPONSE
 # ==========================================
 
 class ATSReportResponse(BaseModel):
-
     id: int
     overall_score: float
     missing_keyword: str
@@ -32,4 +37,4 @@ class ATSReportResponse(BaseModel):
     resume_id: int
 
     class Config:
-        from_attributes = True  
+        from_attributes = True

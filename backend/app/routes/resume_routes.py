@@ -1,28 +1,14 @@
-#User resume uploaded→ Backend receive → save in Resume database
-
-from fastapi import APIRouter, Depends, UploadFile, File, Form
+from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException, status
 from sqlalchemy.orm import Session
 
 from .. import models
 from ..database import SessionLocal
 from ..api.dependencies import get_db
 
-
 router = APIRouter(
     prefix="/resume",
     tags=["Resume"]
 )
-
-
-# Database connection
-def get_db():
-    db = SessionLocal()
-
-    try:
-        yield db
-    finally:
-        db.close()
-
 
 # =========================
 # UPLOAD RESUME
@@ -34,7 +20,6 @@ async def upload_resume(
     file: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
-
     # Check user
     user = (
         db.query(models.User)
@@ -43,15 +28,15 @@ async def upload_resume(
     )
 
     if not user:
-        return {
-            "error": "User not found"
-        }
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
 
     # Read uploaded file
     file_content = await file.read()
 
-    # Temporary text
-    # Later PDF/DOCX text extraction service will be added
+    # Temporary text decoding (will be replaced by full pypdf/pdfplumber service)
     extracted_text = file_content.decode(
         "utf-8",
         errors="ignore"
@@ -84,7 +69,6 @@ def get_user_resumes(
     user_id: int,
     db: Session = Depends(get_db)
 ):
-
     resumes = (
         db.query(models.Resume)
         .filter(models.Resume.user_id == user_id)
