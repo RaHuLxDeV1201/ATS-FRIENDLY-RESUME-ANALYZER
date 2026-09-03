@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <!-- Cyan to Magenta to Neon Pink Gradient -->
+    <linearGradient id="nGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#00E5FF" />
+      <stop offset="50%" stopColor="#A855F7" />
+      <stop offset="100%" stopColor="#F43F5E" />
+    </linearGradient>
+    <linearGradient id="nRightSpike" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stopColor="#8B5CF6" />
+      <stop offset="50%" stopColor="#D946EF" />
+      <stop offset="100%" stopColor="#F43F5E" />
+    </linearGradient>
+  </defs>
+
+  <!-- Left Stem & Diagonal Stroke -->
+  <path d="M22 28 C22 20, 36 20, 36 28 L36 55 L67 80 C70 82, 70 78, 68 74 L36 48 L36 78 C36 88, 22 88, 22 78 Z" fill="url(#nGradient)" />
+  
+  <!-- Right Sharp Spike -->
+  <path d="M84 10 L84 82 C84 92, 67 92, 67 82 L76 35 Z" fill="url(#nRightSpike)" />
+</svg>

@@ -1,0 +1,8 @@
+{
+  "name": "ats-friendly-resume-analyzer-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npx concurrently \"cd backend && .\\venv\\Scripts\\python.exe -m uvicorn app.main:app --port 8000\" \"cd frontend && npx vite --port 5173 --strictPort\""
+  }
+}
