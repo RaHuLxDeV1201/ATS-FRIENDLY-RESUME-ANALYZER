@@ -1,4 +1,5 @@
 import React from 'react';
+import logoImg from '../assets/logo.png';
 
 export default function Logo({ showTagline = false, size = "md", variant = "light" }) {
   // Size variations
@@ -10,7 +11,7 @@ export default function Logo({ showTagline = false, size = "md", variant = "ligh
       {/* User's Custom Cyan-Purple-Pink N Logo Image */}
       <div className={`relative flex items-center justify-center shrink-0 ${isSmall ? 'w-7 h-7' : isLarge ? 'w-11 h-11' : 'w-9 h-9'}`}>
         <img 
-          src="/logo.png" 
+          src={logoImg} 
           alt="NAVIREQ ATS Logo" 
           className="w-full h-full object-contain filter drop-shadow-md rounded-lg"
         />
