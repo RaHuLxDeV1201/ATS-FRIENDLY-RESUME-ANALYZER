@@ -14,16 +14,16 @@ models.Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI(
-    title="ATS Friendly Resume Analyzer",
+    title="ATS-Friendly Resume Analyzer API",
     description="Backend API for ATS Friendly Resume Analyzer",
     version="1.0.0"
 )
 
 
-# CORS
+# Add CORS middleware for frontend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:5173", "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -32,27 +32,27 @@ app.add_middleware(
 
 # Home
 @app.get("/")
-def home():
+def read_root():
     return {
         "message": "ATS Friendly Resume Analyzer API is running!"
     }
 
 
-# Authentication
+# Authentication routes
 app.include_router(
     auth_router,
     tags=["Authentication"]
 )
 
 
-# Resume
+# Resume routes
 app.include_router(
     resume_router,
     tags=["Resume"]
 )
 
 
-# ATS
+# ATS analysis routes
 app.include_router(
     ats_router,
     tags=["ATS Analysis"]

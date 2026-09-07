@@ -141,3 +141,9 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+.vercel
+
+__pycache__/
+*.pyc
+*.db
+.env
