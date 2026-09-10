@@ -7,7 +7,10 @@ if os.environ.get("VERCEL"):
     db_path = "/tmp/app_database.db"
     SQLALCHEMY_DATABASE_URL = f"sqlite:///{db_path}"
 else:
-    SQLALCHEMY_DATABASE_URL = "sqlite:///./app_database.db"
+    from pathlib import Path
+    ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+    db_path = ROOT_DIR / "app_database.db"
+    SQLALCHEMY_DATABASE_URL = f"sqlite:///{db_path.as_posix()}"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,

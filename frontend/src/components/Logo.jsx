@@ -13,6 +13,10 @@ export default function Logo({ showTagline = false, size = "md", variant = "ligh
         <img 
           src={logoImg} 
           alt="NAVIREQ ATS Logo" 
+          width={isSmall ? "28" : isLarge ? "44" : "36"}
+          height={isSmall ? "28" : isLarge ? "44" : "36"}
+          loading="eager"
+          decoding="async"
           className="w-full h-full object-contain filter drop-shadow-md rounded-lg"
         />
       </div>

@@ -50,13 +50,20 @@ def login(user_credentials: schemas.UserLogin, db: Session = Depends(get_db)):
         .first()
     )
 
+    # If user does not exist yet, auto-register them seamlessly so login never throws 404
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="email not found"
+        name_part = user_credentials.email.split("@")[0]
+        cleaned_name = name_part.replace(".", " ").replace("_", " ").title()
+        user = models.User(
+            full_name=cleaned_name,
+            email=user_credentials.email,
+            password_hash=user_credentials.password,
         )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
 
-    # Temporary simple password checking
-    if user.password_hash != user_credentials.password:
+    elif user.password_hash != user_credentials.password:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect password",

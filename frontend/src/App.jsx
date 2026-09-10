@@ -1,21 +1,28 @@
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 // Layout Components
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
-// Pages
-import Home from './pages/Home';
-import UploadResume from './pages/UploadResume';
-import ATSReport from './pages/ATSReport';
-import GrammarChecker from './pages/GrammarChecker';
-import JobMatch from './pages/JobMatch';
-import ResumeBuilder from './pages/ResumeBuilder';
-import Dashboard from './pages/Dashboard';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Profile from './pages/Profile';
-import Settings from './pages/Settings';
+// Lazy-loaded Pages for Core Web Vitals optimization
+const Home = lazy(() => import('./pages/Home'));
+const UploadResume = lazy(() => import('./pages/UploadResume'));
+const ATSReport = lazy(() => import('./pages/ATSReport'));
+const GrammarChecker = lazy(() => import('./pages/GrammarChecker'));
+const JobMatch = lazy(() => import('./pages/JobMatch'));
+const ResumeBuilder = lazy(() => import('./pages/ResumeBuilder'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const Profile = lazy(() => import('./pages/Profile'));
+const Settings = lazy(() => import('./pages/Settings'));
+
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-[50vh]" aria-live="polite">
+    <div className="w-8 h-8 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
+    <span className="sr-only">Loading page...</span>
+  </div>
+);
 
 function App() {
   return (
@@ -23,20 +30,22 @@ function App() {
       <Navbar />
       
       <main className="flex-grow container mx-auto px-4 py-6">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/upload" element={<UploadResume />} />
-          <Route path="/ats-report" element={<ATSReport />} />
-          <Route path="/ats-report/:id" element={<ATSReport />} />
-          <Route path="/grammar" element={<GrammarChecker />} />
-          <Route path="/job-match" element={<JobMatch />} />
-          <Route path="/builder" element={<ResumeBuilder />} />
-          <Route path="/dashboard" element={<UploadResume />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/settings" element={<Settings />} />
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/upload" element={<UploadResume />} />
+            <Route path="/ats-report" element={<ATSReport />} />
+            <Route path="/ats-report/:id" element={<ATSReport />} />
+            <Route path="/grammar" element={<GrammarChecker />} />
+            <Route path="/job-match" element={<JobMatch />} />
+            <Route path="/builder" element={<ResumeBuilder />} />
+            <Route path="/dashboard" element={<UploadResume />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
+          </Routes>
+        </Suspense>
       </main>
 
       <Footer />

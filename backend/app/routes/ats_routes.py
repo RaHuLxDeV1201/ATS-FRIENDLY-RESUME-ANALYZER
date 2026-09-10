@@ -131,6 +131,16 @@ async def analyze_resume_file(
     db.commit()
     db.refresh(report)
 
+    print("\n" + "=" * 55)
+    print(f"📄 [ATS BACKEND] Received PDF: {file.filename}")
+    print(f"👤 User: {full_name} (ID: {valid_user_id})")
+    print(f"📝 Extracted Text ({len(extracted_text)} chars):\n{extracted_text[:250]}...")
+    print(f"🎯 ATS Score: {analysis_result['overall_score']}")
+    print(f"❌ Missing Skills: {missing_keywords_str or 'None'}")
+    print(f"⚠️  Grammar Mistakes: {grammar_mistakes_count}")
+    print(f"💾 Saved to DB -> Resume ID: {resume.id} | Report ID: {report.id}")
+    print("=" * 55 + "\n")
+
     analysis_result["report_id"] = report.id
     analysis_result["resume_id"] = resume.id
     analysis_result["file_name"] = file.filename

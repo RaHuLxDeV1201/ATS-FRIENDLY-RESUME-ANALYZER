@@ -9,13 +9,22 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
     """
     try:
         pdf_file = BytesIO(file_bytes)
-        reader = PdfReader(pdf_file)
+        reader = PdfReader(pdf_file, strict=False)
+
+        if reader.is_encrypted:
+            try:
+                reader.decrypt("")
+            except Exception:
+                pass
 
         extracted_pages = []
         for page in reader.pages:
-            text = page.extract_text()
-            if text:
-                extracted_pages.append(text)
+            try:
+                text = page.extract_text()
+                if text:
+                    extracted_pages.append(text)
+            except Exception:
+                continue
 
         full_text = "\n".join(extracted_pages)
         # Clean weird non-printable control characters

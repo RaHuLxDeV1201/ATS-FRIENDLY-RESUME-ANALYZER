@@ -56,6 +56,13 @@ async def upload_resume(
     db.commit()
     db.refresh(new_resume)
 
+    print("\n" + "=" * 55)
+    print(f"📄 [RESUME BACKEND] Uploaded PDF: {file.filename}")
+    print(f"👤 User: {full_name} (ID: {valid_user_id})")
+    print(f"📝 Extracted Text ({len(extracted_text)} chars):\n{extracted_text[:250]}...")
+    print(f"💾 Saved to DB -> Resume ID: {new_resume.id}")
+    print("=" * 55 + "\n")
+
     return {
         "message": "Resume uploaded and parsed successfully",
         "resume_id": new_resume.id,

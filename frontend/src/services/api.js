@@ -1,6 +1,4 @@
-const API_BASE_URL = typeof window !== 'undefined' && window.location.hostname === "localhost"
-  ? "http://localhost:8000"
-  : "";
+const API_BASE_URL = "http://localhost:8000";
 
 /**
  * Register a new user
@@ -46,6 +44,17 @@ export async function analyzeResumeFile(file, jobDescription = "") {
   formData.append("file", file);
   if (jobDescription) {
     formData.append("job_description", jobDescription);
+  }
+
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    try {
+      const u = JSON.parse(storedUser);
+      const uid = u.user_id || u.id;
+      if (uid) {
+        formData.append("user_id", uid);
+      }
+    } catch (e) {}
   }
 
   const response = await fetch(`${API_BASE_URL}/ats/analyze-file`, {
