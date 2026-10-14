@@ -17,5 +17,6 @@
 
 # How to Run Backend Server Separately Using SWAGGER UI
 1. OPEN VISUAL CODE IN YOUR SYSTEM.
-2.  IN THE TERMINAL WRITE THIS COMMAND:- cd C:\Users\rupal\OneDrive\Desktop\ATS\ATS-FRIENDLY-RESUME-ANALYZER\backend> uvicorn app.main:app --reload
+2.  IN THE TERMINAL WRITE THIS COMMAND:-  cd "C:\Users\rupal\OneDrive\Desktop\ATS\ATS-FRIENDLY-RESUME-ANALYZER\backend"                         
+3.   then write uvicorn app.main:app --reload
 
